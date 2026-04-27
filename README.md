@@ -1,57 +1,74 @@
-Build a Java-based static flow analyzer for a Struts application.
+Modify my Java FlowTracer code to improve flow clarity.
 
-Project Structure (fixed):
+Current problem:
 
-- Root: WKS-CustomerService
-- struts.xml: WKS-CustomerService/webapp/WEB-INF/classes/struts.xml
-- Java source: WKS-CustomerService/src/main/java/
-- Action classes package: com.gecs.apollo.wkst.action
-- JSP folder: WKS-CustomerService/src/main/webapp/jsp/
+- It prints all methods including getters, setters, utility methods
+- Output is too large and not suitable for flowchart
 
-Goal:
-Given a JSP file name as input (e.g., "ChangeInformation.jsp"), the program should:
+Required changes:
 
-STEP 1: Parse struts.xml
+1. Filter Methods:
 
-- Use DocumentBuilder
-- Iterate through all <action> nodes
-- For each action, iterate through all <result> nodes
-- Match JSP using:
-  resultPath.endsWith("ChangeInformation.jsp")
+- Exclude methods starting with:
+  get, set, is, equals, toString, hashCode
+- Exclude Java built-in methods
 
-STEP 2: Extract Data
-For each match, extract:
+2. Keep Only Business Logic Methods:
 
-- action name
-- class name (fully qualified)
-- result name
-- JSP path
+- Include methods that contain keywords like:
+  process, update, create, validate, save, handle
 
-STEP 3: Resolve Java File
-Convert class name to file path:
-com.gecs.apollo.wkst.action.ChangeInformationUpdateAction
-→ com/gecs/apollo/wkst/action/ChangeInformationUpdateAction.java
+3. Limit Output:
 
-Full path:
-WKS-CustomerService/src/main/java/<converted_path>
+- Show only top 5–10 important methods
+- If more exist, print "... and more"
 
-Check if file exists.
+4. Improve Flow Structure:
+   Change output format to:
 
-STEP 4: Analyze Java Class
+[START JSP]
+ChangeInformation.jsp
 
-- Read Java file as text
+↓
 
-- Extract execute() method body using regex:
-  public String execute()
+[ACTION]
+UpdateChangeInformation
 
-- Inside execute():
+↓
+
+[CLASS]
+ChangeInformationUpdateAction.execute()
+
+↓
+
+[BUSINESS LOGIC]
+
+- processEMVChangeInfo()
+
+- processChangeInformationFormBean()
+
+- doPostProcessing()
   
-  1. Extract method calls:
-     pattern: (\w+)(
-     ignore keywords: if, for, while, switch, catch
-  
-  2. Extract return values:
-     pattern: return "value"
+  ↓
+
+[DECISION]
+Return Value?
+
+↓
+
+[OUTPUT]
+SUCCESS → WrapMain.jsp
+ChangeInfo → ChangeInformation.jsp
+
+5. Do NOT print:
+
+- Total method counts
+- Getters/setters lists
+- Utility methods
+
+6. Keep code simple (no external libraries)
+
+Return only updated Java code.
 
 STEP 5: Match Return with Results
 
