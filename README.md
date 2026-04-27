@@ -1,139 +1,39 @@
-Modify my Java FlowTracer code to improve flow clarity.
+I have AST parsed output from a Java file which includes:
+- List of method calls (49 real calls)
+- List of if conditions (308 conditions)
+- Return values
 
-Current problem:
+I want to generate a clean Mermaid flowchart.
 
-- It prints all methods including getters, setters, utility methods
-- Output is too large and not suitable for flowchart
+Requirements:
+1. Do NOT include all 308 conditions individually
+2. Group conditions into logical blocks like:
+   - Validation checks
+   - Business logic
+   - Error handling
+3. Limit main flowchart to 10–20 nodes max
+4. Represent grouped conditions as single nodes like:
+   "Validation Block (120 conditions)"
+5. Show proper branching:
+   - Validation → Pass / Fail
+   - Final decision → Success / Error
+6. Include method calls as a single grouped node:
+   "Service Calls (49 methods)"
+7. Include actual return values like:
+   - nextpage
+   - null
+   - execute(context)
 
-Required changes:
+Output format:
+- Generate Mermaid syntax
+- Use flowchart TD
+- Keep it clean and readable
 
-1. Filter Methods:
+Also create an OPTIONAL second Mermaid diagram for detailed view of conditions.
 
-- Exclude methods starting with:
-  get, set, is, equals, toString, hashCode
-- Exclude Java built-in methods
+Input example:
+Method Calls: [list]
+Conditions: [list]
+Returns: [list]
 
-2. Keep Only Business Logic Methods:
-
-- Include methods that contain keywords like:
-  process, update, create, validate, save, handle
-
-3. Limit Output:
-
-- Show only top 5–10 important methods
-- If more exist, print "... and more"
-
-4. Improve Flow Structure:
-   Change output format to:
-
-[START JSP]
-ChangeInformation.jsp
-
-↓
-
-[ACTION]
-UpdateChangeInformation
-
-↓
-
-[CLASS]
-ChangeInformationUpdateAction.execute()
-
-↓
-
-[BUSINESS LOGIC]
-
-- processEMVChangeInfo()
-
-- processChangeInformationFormBean()
-
-- doPostProcessing()
-  
-  ↓
-
-[DECISION]
-Return Value?
-
-↓
-
-[OUTPUT]
-SUCCESS → WrapMain.jsp
-ChangeInfo → ChangeInformation.jsp
-
-5. Do NOT print:
-
-- Total method counts
-- Getters/setters lists
-- Utility methods
-
-6. Keep code simple (no external libraries)
-
-Return only updated Java code.
-
-STEP 5: Match Return with Results
-
-- Compare return values with <result name="">
-- Identify which return leads to the given JSP
-
-STEP 6: Build Flow
-
-Expected Output:
-
-INPUT JSP: ChangeInformation.jsp
-
----
-
-Action: UpdateChangeInformation
-Class: ChangeInformationUpdateAction
-
-Flow:
-UpdateChangeInformation
-↓
-ChangeInformationUpdateAction.execute()
-↓
-validateUser()
-↓
-updateCustomerInfo()
-↓
-saveToDB()
-↓
-"ChangeInfo"
-↓
-ChangeInformation.jsp
-
----
-
-STEP 7: Handle Multiple Matches
-
-- If multiple actions map to same JSP, print separate flows
-
-Classes to Implement:
-
-- StrutsParser (parse XML)
-- JavaFileResolver (find Java file)
-- JavaAnalyzer (extract methods + returns)
-- FlowBuilder (combine everything)
-- Main class (input JSP name and run)
-
-Constraints:
-
-- Use only core Java (no frameworks)
-- Keep implementation simple
-- Use regex for parsing (no AST required initially)
-- Console output only
-
-Optional Enhancements:
-
-- Recursive fallback search if Java file not found
-- Handle multiple result mappings
-- Improve method filtering
-
-Deliver:
-
-- Complete working Java code
-- Clean class structure
-- Runnable main() method
-
-Do not include explanations—only provide code.- Sample main() method showing usage
-
-Do NOT give explanations—only code.
+Output only Mermaid code.
